@@ -12,7 +12,7 @@ class Board extends React.Component {
    * @return {Element} Returns a square component.
    */
   renderSquare(i) {
-    return <Square />;
+    return <Square value={i} />;
   }
 
   /**
