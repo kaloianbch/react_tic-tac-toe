@@ -19,7 +19,7 @@ describe('Board Component Suite', () => {
   });
 
   it('renders 3 row containers with 3 squares in each container', () => {
-    wrapper.find('.board-row').forEach(function(row) {
+    wrapper.find('.board-row').forEach((row) => {
       expect(row.children().length).toBe(3);
       row.children().forEach(function(node) {
         expect(node.type()).toEqual(Square);
