@@ -20,12 +20,14 @@ describe('Square Component Suite', () => {
     expect(wrapper.text()).toEqual('test');
   });
 
-  it('creates an alert when clicked on', () => {
-    jest.spyOn(window, 'alert').mockImplementation(() => {});
+  it('initializes with a default state', () => {
     const wrapper = shallow(<Square/>);
+    expect(wrapper.state('value')).toEqual(null);
+  });
 
+  it('updates the state value with the property value when clicked on', () => {
+    const wrapper = shallow(<Square/>);
     wrapper.find('.square').simulate('click');
-    expect(window.alert).toBeCalledTimes(1);
-    expect(window.alert).toBeCalledWith('click');
+    expect(wrapper.state('value')).toEqual('X');
   });
 });
