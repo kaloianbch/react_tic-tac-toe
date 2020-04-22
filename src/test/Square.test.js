@@ -18,4 +18,13 @@ describe('Square Component Suite', () => {
     const wrapper = mount(<Square value='test'/>);
     expect(wrapper.text()).toEqual('test');
   });
+
+  it('creates an alert when clicked on', () => {
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    const wrapper = mount(<Square/>);
+
+    wrapper.find('.square').simulate('click');
+    expect(window.alert).toBeCalledTimes(1);
+    expect(window.alert).toBeCalledWith('click');
+  });
 });
