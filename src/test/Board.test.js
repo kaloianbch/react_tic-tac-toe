@@ -1,12 +1,12 @@
 import React from 'react';
 import Board from '../components/Board';
 
-import {configure, mount} from 'enzyme';
+import {configure, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Square from '../components/Square';
 configure({adapter: new Adapter()});
 
-const wrapper = mount(<Board/>);
+const wrapper = shallow(<Board/>);
 
 describe('Board Component Suite', () => {
   it('renders 3 containers to act as rows', () => {
