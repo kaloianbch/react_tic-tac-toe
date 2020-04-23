@@ -10,7 +10,7 @@ describe('Square Component Suite', () => {
   it('renders a single button with the class name square', () => {
     const wrapper = mount(<Square/>);
 
-    expect(wrapper.children().length).toBe(1);
+    expect(wrapper.children().length).toEqual(1);
     expect(wrapper.childAt(0).type()).toEqual('button');
     expect(wrapper.childAt(0).hasClass('square')).toEqual(true);
   });
@@ -20,14 +20,14 @@ describe('Square Component Suite', () => {
     expect(wrapper.text()).toEqual('test');
   });
 
-  it('initializes with a default state', () => {
-    const wrapper = shallow(<Square/>);
-    expect(wrapper.state('value')).toEqual(null);
-  });
-
-  it('updates the state value with the property value when clicked on', () => {
-    const wrapper = shallow(<Square/>);
+  it('can be passed an onClick function as a prop', () => {
+    const func = jest.fn();
+    const wrapper = shallow(<Square onClick={func}/>);
     wrapper.find('.square').simulate('click');
-    expect(wrapper.state('value')).toEqual('X');
+    expect(func).toBeCalledTimes(1);
+  });
+  it('will display a value prop as text within the button', () =>{
+    const wrapper = shallow(<Square value={'test'}/>);
+    expect(wrapper.childAt(0).text()).toEqual('test');
   });
 });

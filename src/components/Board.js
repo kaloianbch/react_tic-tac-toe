@@ -7,12 +7,25 @@ import Square from './Square';
  */
 class Board extends React.Component {
   /**
+   * Constructor method to be called whenever this component initialises.
+   * Used to set the initial component state.
+   * @param {Object} props Component properties to be used in the constructor.
+   * These are passed through the DOM element.
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+    };
+  }
+
+  /**
    * Creates a single square component within the board.
    * @param {number} i A as of yet unused number.
    * @return {Element} Returns a square component.
    */
   renderSquare(i) {
-    return <Square value={String(i)} />;
+    return <Square value={this.state.squares[i]} />;
   }
 
   /**
