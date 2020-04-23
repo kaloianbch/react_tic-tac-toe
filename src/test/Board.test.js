@@ -34,6 +34,7 @@ describe('Board Component Suite', () => {
   it('initializes a default state when mounted', () => {
     const wrapper = shallow(<Board/>);
     expect(wrapper.state('squares')).toEqual(Array(9).fill(null));
+    expect(wrapper.state('xIsNext')).toEqual(true);
   });
 
   it('passes a array value from the state to the corresponding square ' +
@@ -60,14 +61,19 @@ describe('Board Component Suite', () => {
     expect(spy).toBeCalledTimes(9);
     spy.mockClear();
   });
-  it('updates the value prop of a child square to \'X\' ' +
-    'using the click handler', () => {
-    const res = [];
-    const expRes = Array(9).fill('X');
+
+  it('updates the child square with the turn players symbol ' +
+    'when clicked on and then updates the current player bool', () => {
+    const valRes = [];
+    const expValRes = ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'];
+    const xIsNextRes = [];
+    const expXIsNextRes = [true, false, true, false, true, false, true, false,
+      true];
     const wrapper = mount(<Board/>);
 
     wrapper.find('.board-row').forEach((row) => {
       row.children().forEach(function(node) {
+        xIsNextRes.push(wrapper.state('xIsNext'));
         node.simulate('click');
       });
     });
@@ -76,9 +82,10 @@ describe('Board Component Suite', () => {
        in time for some reason. */
     wrapper.find('.board-row').forEach((row) => {
       row.children().forEach(function(node) {
-        res.push(node.props().value);
+        valRes.push(node.props().value);
       });
     });
-    expect(res).toEqual(expRes);
+    expect(valRes).toEqual(expValRes);
+    expect(xIsNextRes).toEqual(expXIsNextRes);
   });
 });

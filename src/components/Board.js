@@ -16,6 +16,7 @@ class Board extends React.Component {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
+      xIsNext: true,
     };
   }
 
@@ -26,8 +27,13 @@ class Board extends React.Component {
    */
   handleClick(i) {
     const newSquares = this.state.squares.slice();
-    newSquares[i] = 'X';
-    this.setState({squares: newSquares});
+
+    newSquares[i] = this.state.xIsNext ? 'X' : 'O';
+
+    this.setState({
+      squares: newSquares,
+      xIsNext: !this.state.xIsNext,
+    });
   }
   /**
    * Creates a single square component within the board.
