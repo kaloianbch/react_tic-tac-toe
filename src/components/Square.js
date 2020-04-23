@@ -3,24 +3,19 @@ import PropTypes from 'prop-types';
 import '../css/Square.css';
 
 /**
- * The square component renders the game board square.
+ * Function component which creates squares which will be managed by the board.
+ * @param {Object} props Properties which are passed via the DOM element
+ * deceleration.
+ * @return {Element} returns a stylized button whose text is updated through a
+ * onClick function.
  */
-class Square extends React.Component {
-  /**
-   * React render function, returns DOM elements of the component.
-   * @return {Element} Returns a stylized button.
-   */
-  render() {
-    return (
-      <button
-        className="square"
-        onClick={() => this.props.onClick()}
-      >
-        {this.props.value}
-      </button>
-    );
-  }
-}
+const Square = (props) => {
+  return (
+    <button className={'square'} onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
+};
 
 Square.propTypes = {
   value: PropTypes.string,
