@@ -20,12 +20,27 @@ class Board extends React.Component {
   }
 
   /**
+   * Updates the board state when a player clicks a square and changes the
+   * stored value for that square.
+   * @param {number} i Indicator of which square was clicked.
+   */
+  handleClick(i) {
+    const newSquares = this.state.squares.slice();
+    newSquares[i] = 'X';
+    this.setState({squares: newSquares});
+  }
+  /**
    * Creates a single square component within the board.
    * @param {number} i A as of yet unused number.
    * @return {Element} Returns a square component.
    */
   renderSquare(i) {
-    return <Square value={this.state.squares[i]} />;
+    return (
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    );
   }
 
   /**

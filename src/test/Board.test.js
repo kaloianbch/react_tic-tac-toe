@@ -49,4 +49,36 @@ describe('Board Component Suite', () => {
     });
     expect(res).toEqual(testState);
   });
+  it('passes an onclick handler function to all child squares', () => {
+    const spy = jest.spyOn(Board.prototype, 'handleClick');
+    const wrapper = mount(<Board/>);
+    wrapper.find('.board-row').forEach((row) => {
+      row.children().forEach(function(node) {
+        node.simulate('click');
+      });
+    });
+    expect(spy).toBeCalledTimes(9);
+    spy.mockClear();
+  });
+  it('updates the value prop of a child square to \'X\' ' +
+    'using the click handler', () => {
+    const res = [];
+    const expRes = Array(9).fill('X');
+    const wrapper = mount(<Board/>);
+
+    wrapper.find('.board-row').forEach((row) => {
+      row.children().forEach(function(node) {
+        node.simulate('click');
+      });
+    });
+
+    /* loop around a second time to get the props because they don't update
+       in time for some reason. */
+    wrapper.find('.board-row').forEach((row) => {
+      row.children().forEach(function(node) {
+        res.push(node.props().value);
+      });
+    });
+    expect(res).toEqual(expRes);
+  });
 });
