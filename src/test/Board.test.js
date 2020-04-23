@@ -88,4 +88,14 @@ describe('Board Component Suite', () => {
     expect(valRes).toEqual(expValRes);
     expect(xIsNextRes).toEqual(expXIsNextRes);
   });
+
+  it('updates the player turn indicator', () => {
+    const wrapper = shallow(<Board/>);
+    expect(wrapper.find('.status').text()).toBe('Next player: X');
+    wrapper.setState({
+      squares: Array(9).fill(null),
+      xIsNext: false,
+    });
+    expect(wrapper.find('.status').text()).toBe('Next player: O');
+  });
 });
