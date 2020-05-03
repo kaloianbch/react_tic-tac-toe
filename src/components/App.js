@@ -1,35 +1,24 @@
 import React from 'react';
 import '../css/App.css';
-import Board from './Board';
+import Game from './Game';
 
 // TODO - how does the manifest.json work
 
 /**
- * The App component wraps around the Board component and will contain and
- * display information about the game, probably.
+ * The App component acts as the entry point for the code of the site.
+ * Beyond and even here is just React code.
  */
-class Game extends React.Component {
+class App extends React.Component {
   /**
    * React render function, returns DOM elements of the component.
-   * @return {Element} Game container, which contains a single board and
-   * a container for the game information to be displayed in.
+   * @return {Element} Game component.
+   * @see Game
    */
   render() {
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
-      </div>
+      <Game/>
     );
   }
 }
 
-// ========================================
-
-export default Game;
-
+export default App;
