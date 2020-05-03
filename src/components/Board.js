@@ -25,11 +25,15 @@ class Board extends React.Component {
 
   /**
    * Updates the board state when a player clicks a square and changes the
-   * stored value for that square.
+   * stored value for that square. Does nothing if the square is filled or if
+   * the game is won.
    * @param {number} i Indicator of which square was clicked.
    */
   handleClick(i) {
     const newSquares = this.state.squares.slice();
+    if (newSquares[i] || calculateWinner(newSquares)) {
+      return;
+    }
 
     newSquares[i] = this.state.xIsNext ? 'X' : 'O';
 

@@ -64,17 +64,14 @@ describe('Board Component Suite', () => {
   it('updates the child square with the turn players symbol ' +
     'when clicked on and then updates the current player bool', () => {
     const valRes = [];
-    const expValRes = ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X'];
+    const expValRes = ['X', 'O', 'X', null, null, null, null, null, null];
     const xIsNextRes = [];
-    const expXIsNextRes = [true, false, true, false, true, false, true, false,
-      true];
-    const wrapper = mount(<Board/>);
-
-    wrapper.find('.board-row').forEach((row) => {
-      row.children().forEach(function(node) {
-        xIsNextRes.push(wrapper.state('xIsNext'));
-        node.simulate('click');
-      });
+    const expXIsNextRes = [true, false, true];
+    const wrapper = shallow(<Board/>);
+    console.log(wrapper.childAt(1).debug());
+    wrapper.childAt(1).children().forEach(function(node) {
+      xIsNextRes.push(wrapper.state('xIsNext'));
+      node.simulate('click');
     });
 
     /* loop around a second time to get the props because they don't update
@@ -126,5 +123,26 @@ describe('Board Component Suite', () => {
       expect(wrapper.find('.status').text()).toBe(
           'Winner: ' + (i % 2 === 0 ? 'X' : 'O'));
     }
+  });
+
+  it('it doesn\'t let players overwrite filled in squares', () => {
+    const wrapper = shallow(<Board/>);
+    wrapper.setState({
+      squares: Array(9).fill('X'),
+      xIsNext: false,
+    });
+    wrapper.childAt(1).childAt(1).simulate('click');
+    expect(wrapper.state('squares')).toEqual(Array(9).fill('X'));
+  });
+
+  it('stops accepting clicks once a winner is declared', () => {
+    const wrapper = shallow(<Board/>);
+    const squaresState = [null, null, null, 'X', 'X', 'X', null, null, null];
+    wrapper.setState({
+      squares: squaresState,
+      xIsNext: true,
+    });
+    wrapper.childAt(1).childAt(1).simulate('click');
+    expect(wrapper.state('squares')).toEqual(squaresState);
   });
 });
