@@ -6,7 +6,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import Square from '../components/Square';
 configure({adapter: new Adapter()});
 
-
 describe('Board Component Suite', () => {
   it('renders 3 containers to act as rows', () => {
     const wrapper = shallow(<Board/>);
@@ -97,5 +96,35 @@ describe('Board Component Suite', () => {
       xIsNext: false,
     });
     expect(wrapper.find('.status').text()).toBe('Next player: O');
+  });
+
+  it('declares a winner when a set of winning lines is present', () => {
+    const winningLines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < 7; i++) { // Loop once for each possible win state
+      const testSquares = Array(9).fill(null);
+
+      for (let j = 0; j < winningLines[i].length; j++) { // Set a win state
+        // Test for either player working as a valid winner
+        testSquares[winningLines[i][j]] = i % 2 === 0 ? 'X' : 'O';
+      }
+
+      const wrapper = shallow(<Board/>);
+      wrapper.setState({
+        squares: testSquares,
+        xIsNext: i % 2 === 0,
+      });
+      expect(wrapper.find('.status').text()).toBe(
+          'Winner: ' + (i % 2 === 0 ? 'X' : 'O'));
+    }
   });
 });

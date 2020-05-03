@@ -1,6 +1,9 @@
 import React from 'react';
 import '../css/Board.css';
 import Square from './Square';
+
+// TODO - dynamic size, through state, maybe through setup screen later.
+
 /**
  * The tic tac toe game board component acts as a container for the board
  * squares and allows for them to be rendered in a 3x3 grid.
@@ -55,8 +58,9 @@ class Board extends React.Component {
    * numbered in order squares.
    */
   render() {
-    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-
+    const status = calculateWinner(this.state.squares) ? 'Winner: ' +
+      (this.state.xIsNext ? 'X': 'O') : 'Next player: ' +
+      (this.state.xIsNext ? 'X' : 'O'); // Haha haha... ha
     return (
       <div>
         <div className="status">{status}</div>
@@ -78,6 +82,33 @@ class Board extends React.Component {
       </div>
     );
   }
+}
+
+/**
+ * Compares board state to seven possible winning states.
+ * @param {String[]} squares Current board state
+ * @return {null|String} Returns null if there is no current winner and the
+ * winners character otherwise
+ * @see Squares
+ */
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }
 
 export default Board;
