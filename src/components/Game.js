@@ -6,6 +6,22 @@ import Board from './Board';
  */
 class Game extends React.Component {
   /**
+   * Constructor method to be called whenever this component initialises.
+   * Used to set the initial component state.
+   * @param {Object} props Component properties to be used in the constructor.
+   * These are passed through the DOM element.
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      history: [{
+        squares: Array(9).fill(null),
+      }],
+      xIsNext: true,
+    };
+  }
+
+  /**
    * React render function, returns DOM elements of the component.
    * @return {Element} Game container, which contains a single Board and
    * a container for the game information to be displayed in.

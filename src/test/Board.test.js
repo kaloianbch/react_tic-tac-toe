@@ -6,7 +6,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import Square from '../components/Square';
 configure({adapter: new Adapter()});
 
-describe('Board Component Suite', () => {
+describe('Board Component Initial State Suite', () => {
   it('renders 3 containers to act as rows', () => {
     const wrapper = shallow(<Board/>);
 
@@ -35,55 +35,22 @@ describe('Board Component Suite', () => {
     expect(wrapper.state('squares')).toEqual(Array(9).fill(null));
     expect(wrapper.state('xIsNext')).toEqual(true);
   });
+});
 
-  it('passes a array value from the state to the corresponding square ' +
-    'as a value prop', () => {
-    const wrapper = mount(<Board/>);
-    const testState = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
-    const res = [];
-    wrapper.setState({squares: testState});
-    wrapper.find('.board-row').forEach((row) => {
-      row.children().forEach(function(node) {
-        res.push(node.props().value);
-      });
-    });
-    expect(res).toEqual(testState);
-  });
-  it('passes an onclick handler function to all child squares', () => {
-    const spy = jest.spyOn(Board.prototype, 'handleClick');
-    const wrapper = mount(<Board/>);
-    wrapper.find('.board-row').forEach((row) => {
-      row.children().forEach(function(node) {
-        node.simulate('click');
-      });
-    });
-    expect(spy).toBeCalledTimes(9);
-    spy.mockClear();
-  });
 
-  it('updates the child square with the turn players symbol ' +
-    'when clicked on and then updates the current player bool', () => {
-    const valRes = [];
-    const expValRes = ['X', 'O', 'X', null, null, null, null, null, null];
-    const xIsNextRes = [];
-    const expXIsNextRes = [true, false, true];
-    const wrapper = shallow(<Board/>);
-    console.log(wrapper.childAt(1).debug());
-    wrapper.childAt(1).children().forEach(function(node) {
-      xIsNextRes.push(wrapper.state('xIsNext'));
-      node.simulate('click');
-    });
+describe('Board Functionality Suite', () => {
+  it('updates the current player state bool when a square is clicked on',
+      () => {
+        const xIsNextRes = [];
+        const expXIsNextRes = [false, true, false];
+        const wrapper = shallow(<Board/>);
 
-    /* loop around a second time to get the props because they don't update
-       in time for some reason. */
-    wrapper.find('.board-row').forEach((row) => {
-      row.children().forEach(function(node) {
-        valRes.push(node.props().value);
+        wrapper.childAt(1).children().forEach(function(node) {
+          node.simulate('click');
+          xIsNextRes.push(wrapper.state('xIsNext'));
+        });
+        expect(xIsNextRes).toEqual(expXIsNextRes);
       });
-    });
-    expect(valRes).toEqual(expValRes);
-    expect(xIsNextRes).toEqual(expXIsNextRes);
-  });
 
   it('updates the player turn indicator', () => {
     const wrapper = shallow(<Board/>);
@@ -144,5 +111,55 @@ describe('Board Component Suite', () => {
     });
     wrapper.childAt(1).childAt(1).simulate('click');
     expect(wrapper.state('squares')).toEqual(squaresState);
+  });
+});
+
+
+describe('Board to Square Prop Suite', () => {
+  it('passes a array value from the state to the corresponding square ' +
+    'as a value prop', () => {
+    const wrapper = mount(<Board/>);
+    const testState = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+    const res = [];
+    wrapper.setState({squares: testState});
+    wrapper.find('.board-row').forEach((row) => {
+      row.children().forEach(function(node) {
+        res.push(node.props().value);
+      });
+    });
+    expect(res).toEqual(testState);
+  });
+
+  it('passes an onclick handler function to all child squares', () => {
+    const spy = jest.spyOn(Board.prototype, 'handleClick');
+    const wrapper = mount(<Board/>);
+    wrapper.find('.board-row').forEach((row) => {
+      row.children().forEach(function(node) {
+        node.simulate('click');
+      });
+    });
+    expect(spy).toBeCalledTimes(9);
+    spy.mockClear();
+  });
+
+  it('updates a squares value property when clicked', () => {
+    const valRes = [];
+    const expValRes = ['X', 'O', 'X', null, null, null, null, null, null];
+    const wrapper = shallow(<Board/>);
+
+    /* goes through only the first row to avoid having a win state, which would
+       break the test. */
+    wrapper.childAt(1).children().forEach(function(node) {
+      node.simulate('click');
+    });
+
+    /* loop around a second time to get the props because they don't update
+       in time for some reason. */
+    wrapper.find('.board-row').forEach((row) => {
+      row.children().forEach(function(node) {
+        valRes.push(node.props().value);
+      });
+    });
+    expect(valRes).toEqual(expValRes);
   });
 });
