@@ -12,6 +12,6 @@ describe('App Component Suite', () => {
     const wrapper = mount(<App/>);
 
     expect(wrapper.children().length).toBe(1);
-    expect(wrapper.childAt(0).type()).toEqual(Game);
+    expect(wrapper.childAt(0).type()).toStrictEqual(Game);
   });
 });

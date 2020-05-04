@@ -10,9 +10,9 @@ describe('Square Component Initial Suite', () => {
   it('renders a single button with the class name square', () => {
     const wrapper = mount(<Square/>);
 
-    expect(wrapper.children().length).toEqual(1);
-    expect(wrapper.childAt(0).type()).toEqual('button');
-    expect(wrapper.childAt(0).hasClass('square')).toEqual(true);
+    expect(wrapper.children().length).toStrictEqual(1);
+    expect(wrapper.childAt(0).type()).toStrictEqual('button');
+    expect(wrapper.childAt(0).hasClass('square')).toStrictEqual(true);
   });
 });
 
@@ -26,6 +26,6 @@ describe('Square Prop Suite', () => {
 
   it('will display a value prop as text within the button', () =>{
     const wrapper = shallow(<Square value={'test'}/>);
-    expect(wrapper.childAt(0).text()).toEqual('test');
+    expect(wrapper.childAt(0).text()).toStrictEqual('test');
   });
 });
