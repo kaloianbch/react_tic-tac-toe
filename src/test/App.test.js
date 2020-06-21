@@ -11,6 +11,8 @@ describe('App Component Suite', () => {
   it('renders a Game component', () => {
     const wrapper = mount(<App/>);
 
+    // Just here as a reminder as to how to get this debug print
+    console.log(wrapper.debug());
     expect(wrapper.children().length).toBe(1);
     expect(wrapper.childAt(0).type()).toStrictEqual(Game);
   });
